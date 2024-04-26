@@ -21,7 +21,7 @@ function getStreamlitBaseUrl(): string | null {
   }
 
   try {
-    return new URL(baseUrl).origin
+    return new URL(baseUrl).href
   } catch {
     return null
   }
@@ -127,8 +127,8 @@ const DrawableCanvas = ({ args }: ComponentProps) => {
       bgImage.onload = function() {
         backgroundCanvas.getContext().drawImage(bgImage, 0, 0);
       };
-      const baseUrl = getStreamlitBaseUrl() ?? ""
-      bgImage.src = baseUrl + backgroundImageURL
+      const baseUrl = getStreamlitBaseUrl() ?? "";
+      bgImage.src = baseUrl.replace(/\/+$/, '') + '/' + backgroundImageURL.replace(/^\/+/, '');
     }
   }, [
     canvas,
@@ -138,7 +138,7 @@ const DrawableCanvas = ({ args }: ComponentProps) => {
     backgroundColor,
     backgroundImageURL,
     saveState,
-  ])
+  ]);
 
   /**
    * If state changed from undo/redo/reset, update user-facing canvas
